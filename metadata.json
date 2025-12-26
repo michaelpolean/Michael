@@ -1,5 +1,5 @@
 {
-  "name": "TravelSynthesizer AI",
+  "name": "travel suggestion",
   "description": "An intelligent travel assistant that synthesizes multiple travel blogs and websites into a single, comprehensive itinerary and guide.",
   "requestFramePermissions": []
 }

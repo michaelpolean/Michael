@@ -61,8 +61,8 @@ const App: React.FC = () => {
 
   const isLoading = status === LoadingState.ANALYZING || status === LoadingState.SYNTHESIZING;
 
-  // Helper for select styles
-  const selectStyle = "w-full p-2.5 bg-white border border-slate-200 rounded-lg text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 disabled:bg-slate-50 disabled:text-slate-400";
+  // Helper for select styles - slightly tweaked to match screenshot cleanliness
+  const selectStyle = "w-full p-2.5 bg-white border border-slate-200 rounded-lg text-sm text-slate-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 disabled:bg-slate-50 disabled:text-slate-400";
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800 pb-20">
@@ -102,11 +102,11 @@ const App: React.FC = () => {
               </div>
 
               <div className="mb-6 border-t border-slate-100 pt-6">
-                 <h3 className="text-sm font-semibold text-slate-700 mb-3">Trip Preferences</h3>
-                 <div className="space-y-3">
+                 <h3 className="text-base font-bold text-slate-800 mb-4">Trip Preferences</h3>
+                 <div className="space-y-4">
                     {/* Budget */}
                     <div>
-                      <label className="text-xs text-slate-500 mb-1 block">Budget Style</label>
+                      <label className="text-sm font-medium text-slate-700 mb-1.5 block">Budget Style</label>
                       <select 
                         value={budget} 
                         onChange={(e) => setBudget(e.target.value as BudgetLevel)}
@@ -122,7 +122,7 @@ const App: React.FC = () => {
 
                     {/* Companion */}
                     <div>
-                      <label className="text-xs text-slate-500 mb-1 block">Who is traveling?</label>
+                      <label className="text-sm font-medium text-slate-700 mb-1.5 block">Who is traveling?</label>
                       <select 
                         value={companion} 
                         onChange={(e) => setCompanion(e.target.value as CompanionType)}
@@ -139,7 +139,7 @@ const App: React.FC = () => {
 
                     {/* Season */}
                     <div>
-                      <label className="text-xs text-slate-500 mb-1 block">When are you going?</label>
+                      <label className="text-sm font-medium text-slate-700 mb-1.5 block">When are you going?</label>
                       <select 
                         value={season} 
                         onChange={(e) => setSeason(e.target.value as TravelSeason)}

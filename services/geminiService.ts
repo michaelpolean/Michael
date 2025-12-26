@@ -16,34 +16,37 @@ export const generateTravelGuide = async (
   const validUrls = urls.filter(u => u.trim() !== "");
 
   const prompt = `
-    You are an expert travel consultant and itinerary planner. 
+    你是一位专业的旅游顾问和行程规划师。
     
-    Task: Create a comprehensive, "Master Travel Guide" based on the topics, destinations, and advice found in the following URLs:
+    任务：基于以下提供的URL链接中的主题、目的地和建议，创建一份详尽的“大师级旅游攻略”。
+    链接：
     ${validUrls.map((url, i) => `${i + 1}. ${url}`).join('\n')}
     
-    User Preferences & Constraints:
-    - Budget Level: ${preferences.budget || "Not specified (Provide a balanced mix)"}
-    - Travel Season: ${preferences.season || "Not specified (Mention best times generally)"}
-    - Travel Companions: ${preferences.companion || "Not specified (General)"}
-    - Additional Focus/Notes: "${preferences.additionalNotes || "None"}"
+    用户偏好与限制：
+    - 预算等级：${preferences.budget || "未指定（请提供均衡的建议）"}
+    - 出行季节：${preferences.season || "未指定（请提及一般最佳旅行时间）"}
+    - 同行人员：${preferences.companion || "未指定（通用）"}
+    - 额外关注/备注："${preferences.additionalNotes || "无"}"
 
-    Instructions:
-    1. Use the Google Search tool to research the content, locations, and itineraries mentioned in these specific URLs. If the specific URL content is not directly accessible, search for the destination and topic inferred from the URL to gather the best current information.
-    2. Synthesize all information into a single, cohesive guide. Do not just list the websites; combine their wisdom.
-    3. **CRITICAL**: Tailor the recommendations based on the User Preferences above. 
-       - If Budget is Economy, focus on free attractions and cheap eats. If Luxury, suggest fine dining and exclusive experiences.
-       - If Family/Kids, check for kid-friendly activities. If Couple, look for romantic spots.
-       - If Season is specified, adjust for weather and seasonal closures.
-    4. Verify facts (opening hours, ticket prices, transport options) using Google Search to ensure the guide is up-to-date.
-    5. Structure the guide in Markdown with the following sections:
-       - **Executive Summary**: A quick vibe check of the trip, specifically addressing the ${preferences.companion || 'traveler'} style.
-       - **Best Time to Go**: Weather and crowd advice (specifically for ${preferences.season || 'the recommended season'}).
-       - **Day-by-Day Itinerary**: A detailed schedule combining the best parts of the inputs.
-       - **Must-See Attractions**: With practical tips (e.g., "book in advance").
-       - **Food & Dining**: Recommendations tailored to the ${preferences.budget || 'standard'} budget.
-       - **Logistics**: Transport, accommodation areas, and budget estimates.
+    指令：
+    1. 使用 Google Search 工具研究这些具体 URL 中提到的内容、地点和行程。如果无法直接访问具体 URL 内容，请根据 URL 推断的目的地和主题进行搜索，以获取最新的最佳信息。
+    2. 将所有信息综合成一份连贯的指南。不要只是列出网站；要融合它们的精华。
+    3. **关键**：根据上述用户偏好量身定制建议。
+       - 如果预算是经济型，专注于免费景点和便宜的美食。如果是豪华型，建议精致餐饮和独家体验。
+       - 如果是家庭/亲子，查找适合儿童的活动。如果是情侣，寻找浪漫景点。
+       - 如果指定了季节，请针对天气和季节性关闭情况进行调整。
+    4. 使用 Google Search 核实事实（开放时间、门票价格、交通选项），确保指南是最新的。
+    5. **必须使用中文（简体）撰写**。
+    6. **图文并茂**：虽然你只能生成文本，但请充分使用 Emoji 图标（如 📍, 🍜, 🚗, 📸）来美化排版，让内容生动有趣，避免大段枯燥文字。
+    7. 请按以下 Markdown 结构组织指南：
+       - **🌟 核心摘要**: 旅行基调速览，特别针对${preferences.companion || '旅行者'}风格。
+       - **📅 最佳旅行时间**: 天气和拥挤程度建议（特别是针对${preferences.season || '推荐季节'}）。
+       - **🗺️ 每日行程规划**: 结合输入源精华的详细日程安排。
+       - **📍 必游景点**: 包含实用贴士（例如“提前预订”）。
+       - **🍴 美食推荐**: 针对${preferences.budget || '标准'}预算的当地特色和餐厅推荐。
+       - **🚗 交通与住宿**: 交通方式、住宿区域建议及预算预估。
     
-    Make the tone inspiring, practical, and organized. Use bullet points, bold text for emphasis, and clear headings.
+    语调要充满灵感、实用且条理清晰。使用项目符号、**加粗文本**强调重点。
   `;
 
   try {
@@ -52,12 +55,12 @@ export const generateTravelGuide = async (
       contents: prompt,
       config: {
         tools: [{ googleSearch: {} }],
-        systemInstruction: "You are a world-class travel writer helping a user build the perfect trip summary from multiple sources.",
+        systemInstruction: "You are a world-class travel writer helping a user build the perfect trip summary from multiple sources. Always output in Simplified Chinese.",
         temperature: 0.4, // Lower temperature for more factual/grounded responses
       }
     });
 
-    const markdownContent = response.text || "Sorry, I couldn't generate a guide based on those links. Please try different URLs.";
+    const markdownContent = response.text || "抱歉，我无法根据这些链接生成攻略。请尝试其他网址。";
     
     // Extract grounding chunks if available
     const groundingChunks = response.candidates?.[0]?.groundingMetadata?.groundingChunks || [];
